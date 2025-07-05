@@ -1,6 +1,7 @@
+import React from "react";
 import { Text, View } from "react-native";
 
-export default function Index() {
+const CreateHabit = () => {
   return (
     <View
       style={{
@@ -9,7 +10,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>This is a habit tracker app</Text>
+      <Text>this screen will be used for creating a habit</Text>
     </View>
   );
-}
+};
+
+export default CreateHabit;

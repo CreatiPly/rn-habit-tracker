@@ -1,6 +1,7 @@
+import React from "react";
 import { Text, View } from "react-native";
 
-export default function Index() {
+const Streaks = () => {
   return (
     <View
       style={{
@@ -9,7 +10,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>This is a habit tracker app</Text>
+      <Text>this screen will be used to show streaks info</Text>
     </View>
   );
-}
+};
+
+export default Streaks;
