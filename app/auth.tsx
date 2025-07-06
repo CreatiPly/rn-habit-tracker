@@ -1,9 +1,28 @@
 import React, { useState } from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
-import { Button, Text, TextInput } from "react-native-paper";
+import { Button, Text, TextInput, useTheme } from "react-native-paper";
 
 const AuthPage = () => {
   const [signedUp, setSignedUp] = useState<boolean>(true);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>("");
+
+  const { colors } = useTheme();
+
+  const handleAuth = () => {
+    if (!email || !password) {
+      setError("Email and Password are required");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      return;
+    }
+
+    setError(null);
+  };
 
   const handleAuthSwitch = () => {
     setSignedUp((prev) => !prev);
@@ -25,6 +44,7 @@ const AuthPage = () => {
           placeholder="example@gmail.com"
           mode="outlined"
           style={styles.input}
+          onChangeText={setEmail}
         />
         <TextInput
           label={"Password"}
@@ -32,8 +52,16 @@ const AuthPage = () => {
           keyboardType="default"
           mode="outlined"
           style={styles.input}
+          onChangeText={setPassword}
         />
-        <Button mode="contained" style={styles.button}>
+
+        {error && <Text style={{ color: colors.error }}>{error}</Text>}
+
+        <Button
+          mode="contained"
+          style={styles.button}
+          onPress={() => handleAuth()}
+        >
           {signedUp ? "Sign In" : "Sign Up"}
         </Button>
         <View style={styles.switchModeButton}>
