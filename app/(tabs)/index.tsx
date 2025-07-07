@@ -10,6 +10,7 @@ export default function Index() {
       }}
     >
       <Text>This is a habit tracker app</Text>
+      <Text>This chnage is for the streak 😅</Text>
     </View>
   );
 }
