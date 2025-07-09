@@ -1,6 +1,10 @@
+import { useAuth } from "@/lib/authContext";
 import { Text, View } from "react-native";
+import { Button } from "react-native-paper";
 
 export default function Index() {
+  const { signOut } = useAuth();
+
   return (
     <View
       style={{
@@ -11,6 +15,7 @@ export default function Index() {
     >
       <Text>This is a habit tracker app</Text>
       <Text>This chnage is for the streak 😅</Text>
+      <Button onPress={signOut}>Sign Out</Button>
     </View>
   );
 }

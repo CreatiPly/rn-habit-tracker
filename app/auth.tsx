@@ -70,6 +70,7 @@ const AuthPage = () => {
           label={"Password"}
           autoCapitalize="none"
           keyboardType="default"
+          secureTextEntry
           mode="outlined"
           style={styles.input}
           onChangeText={setPassword}

@@ -1,19 +1,25 @@
-import { AuthProvider } from "@/lib/authContext";
-import { Stack, useRouter } from "expo-router";
+import { AuthProvider, useAuth } from "@/lib/authContext";
+import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
+import { PaperProvider } from "react-native-paper";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 interface AuthCheckerProps {
   children: React.ReactNode;
 }
 const AuthChecker = ({ children }: AuthCheckerProps) => {
   const router = useRouter();
-  const isAuthenticated = false;
+  const { user: isAuthenticated, isLoadingUser } = useAuth();
+  const screens = useSegments();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    const onAuthScreen = screens[0] === "auth";
+    if (!isAuthenticated && !onAuthScreen && !isLoadingUser) {
       router.replace("/auth");
+    } else if (isAuthenticated && onAuthScreen && !isLoadingUser) {
+      router.replace("/");
     }
-  });
+  }, [isAuthenticated, router, screens, isLoadingUser]);
 
   return <>{children}</>;
 };
@@ -21,11 +27,15 @@ const AuthChecker = ({ children }: AuthCheckerProps) => {
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <AuthChecker>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-      </AuthChecker>
+      <PaperProvider>
+        <SafeAreaProvider>
+          <AuthChecker>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+          </AuthChecker>
+        </SafeAreaProvider>
+      </PaperProvider>
     </AuthProvider>
   );
 }

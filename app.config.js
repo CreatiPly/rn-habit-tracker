@@ -2,8 +2,8 @@ import "dotenv/config";
 
 export default {
   expo: {
-    name: "MyApp",
-    slug: "my-app",
+    name: "rn_habit_tracker",
+    slug: "rn_habit_tracker",
     version: "1.0.0",
     extra: {
       appwriteEndpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
