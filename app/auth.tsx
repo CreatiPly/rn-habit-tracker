@@ -1,3 +1,5 @@
+import { useAuth } from "@/lib/authContext";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
@@ -9,8 +11,10 @@ const AuthPage = () => {
   const [error, setError] = useState<string | null>("");
 
   const { colors } = useTheme();
+  const router = useRouter();
+  const { signIn, signUp } = useAuth();
 
-  const handleAuth = () => {
+  const handleAuth = async () => {
     if (!email || !password) {
       setError("Email and Password are required");
       return;
@@ -22,6 +26,22 @@ const AuthPage = () => {
     }
 
     setError(null);
+
+    if (signedUp) {
+      const error = await signIn(email, password);
+      if (error) {
+        setError(error);
+        return;
+      }
+
+      router.replace("/");
+    } else {
+      const error = await signUp(email, password);
+      if (error) {
+        setError(error);
+        return;
+      }
+    }
   };
 
   const handleAuthSwitch = () => {

@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/lib/authContext";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 
@@ -19,10 +20,12 @@ const AuthChecker = ({ children }: AuthCheckerProps) => {
 
 export default function RootLayout() {
   return (
-    <AuthChecker>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-    </AuthChecker>
+    <AuthProvider>
+      <AuthChecker>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </AuthChecker>
+    </AuthProvider>
   );
 }

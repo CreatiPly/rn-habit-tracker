@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { ID, Models } from "react-native-appwrite";
 import { myAuthClient } from "./appwrite";
 
@@ -21,6 +21,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     null
   );
   const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const getUser = async () => {
     try {

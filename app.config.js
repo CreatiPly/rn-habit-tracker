@@ -1,0 +1,14 @@
+import "dotenv/config";
+
+export default {
+  expo: {
+    name: "MyApp",
+    slug: "my-app",
+    version: "1.0.0",
+    extra: {
+      appwriteEndpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
+      appwriteProjectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
+      appwritePlatform: process.env.EXPO_PUBLIC_APPWRITE_PLATFORM,
+    },
+  },
+};
