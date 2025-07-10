@@ -8,12 +8,23 @@
 // export const myAuthClient = new Account(myAppWriteClient);
 
 import Constants from "expo-constants";
-import { Account, Client } from "react-native-appwrite";
+import { Account, Client, Databases } from "react-native-appwrite";
 
-const { appwriteEndpoint, appwriteProjectId, appwritePlatform } =
-  Constants.expoConfig?.extra || {};
+const {
+  appwriteEndpoint,
+  appwriteProjectId,
+  appwritePlatform,
+  appwriteDataBaseID,
+  appwriteDBCollectionID,
+} = Constants.expoConfig?.extra || {};
 
-if (!appwriteEndpoint || !appwriteProjectId || !appwritePlatform) {
+if (
+  !appwriteEndpoint ||
+  !appwriteProjectId ||
+  !appwritePlatform ||
+  !appwriteDataBaseID ||
+  !appwriteDBCollectionID
+) {
   throw new Error(
     "Appwrite configuration is missing in app.config.js or .env file"
   );
@@ -25,3 +36,4 @@ const myAppWriteClient = new Client()
   .setPlatform(appwritePlatform);
 
 export const myAuthClient = new Account(myAppWriteClient);
+export const myDatabaseClient = new Databases(myAppWriteClient);
