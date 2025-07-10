@@ -30,10 +30,16 @@ if (
   );
 }
 
+// main client
 const myAppWriteClient = new Client()
   .setEndpoint(appwriteEndpoint)
   .setProject(appwriteProjectId)
   .setPlatform(appwritePlatform);
 
+// auth client
 export const myAuthClient = new Account(myAppWriteClient);
+
+// database client
 export const myDatabaseClient = new Databases(myAppWriteClient);
+export const MYDATABASEID = appwriteDataBaseID;
+export const MYDBCOLLECTIONID = appwriteDBCollectionID;
