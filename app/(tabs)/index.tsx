@@ -9,7 +9,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Query } from "react-native-appwrite";
-import { Button, Text } from "react-native-paper";
+import { Button, Surface, Text } from "react-native-paper";
 
 export default function Index() {
   const [habits, setHabits] = useState<Habit[]>();
@@ -47,32 +47,38 @@ export default function Index() {
       </View>
 
       {habits?.length === 0 ? (
-        <View>
-          <Text>No habits yet. Add your first Habit</Text>
+        <View style={styles.emptyState}>
+          <Text style={styles.emptyStateText}>
+            No habits yet. Add your first Habit
+          </Text>
         </View>
       ) : (
         habits?.map((habit, key) => (
-          <View key={key}>
-            <Text>{habit.title}</Text>
-            <Text>{habit.description}</Text>
+          <Surface key={key} style={styles.card}>
+            <View style={styles.cardContent}>
+              <Text style={styles.cardTitle}>{habit.title}</Text>
+              <Text style={styles.cardDescription}>{habit.description}</Text>
 
-            <View>
-              <View>
-                <MaterialCommunityIcons
-                  name="fire"
-                  color={"#ff9800"}
-                  size={18}
-                />
-                <Text>{habit.streak_count} day streak</Text>
-              </View>
-              <View>
-                <Text>
-                  {habit.frequency.charAt(0).toUpperCase() +
-                    habit.frequency.slice(1)}
-                </Text>
+              <View style={styles.cardFooter}>
+                <View style={styles.streakBadge}>
+                  <MaterialCommunityIcons
+                    name="fire"
+                    color={"#ff9800"}
+                    size={18}
+                  />
+                  <Text style={styles.streakText}>
+                    {habit.streak_count} day streak
+                  </Text>
+                </View>
+                <View style={styles.frequencyBadge}>
+                  <Text style={styles.frequencyText}>
+                    {habit.frequency.charAt(0).toUpperCase() +
+                      habit.frequency.slice(1)}
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
+          </Surface>
         ))
       )}
     </View>
@@ -131,6 +137,7 @@ const styles = StyleSheet.create({
   streakBadge: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "#fff3e0",
     borderRadius: 12,
     paddingHorizontal: 10,
