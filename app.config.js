@@ -2,7 +2,7 @@ import "dotenv/config";
 
 export default {
   expo: {
-    name: "rn_habit_tracker",
+    name: "TrackHab",
     slug: "rn_habit_tracker",
     version: "1.0.0",
     extra: {
