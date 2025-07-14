@@ -1,7 +1,9 @@
 import {
+  myAppWriteClient,
   myDatabaseClient,
   MYDATABASEID,
   MYDBCOLLECTIONID,
+  RealtimeResponse,
 } from "@/lib/appwrite";
 import { useAuth } from "@/lib/authContext";
 import { Habit } from "@/types/databse.type";
@@ -17,7 +19,38 @@ export default function Index() {
   const { signOut, user } = useAuth();
 
   useEffect(() => {
-    fetchHabitsByUserId();
+    if (user) {
+      const habitsChannel = `databases.${MYDATABASEID}.collections.${MYDBCOLLECTIONID}.documents`;
+      const habitsSubscription = myAppWriteClient.subscribe(
+        habitsChannel,
+        (response: RealtimeResponse) => {
+          if (
+            response.events.includes(
+              "databases.*.collections.*.documents.*.create"
+            )
+          ) {
+            fetchHabitsByUserId();
+          } else if (
+            response.events.includes(
+              "databases.*.collections.*.documents.*.update"
+            )
+          ) {
+            fetchHabitsByUserId();
+          } else if (
+            response.events.includes(
+              "databases.*.collections.*.documents.*.delete"
+            )
+          ) {
+            fetchHabitsByUserId();
+          }
+        }
+      );
+      fetchHabitsByUserId();
+
+      return () => {
+        habitsSubscription();
+      };
+    }
   }, [user]);
 
   const fetchHabitsByUserId = async () => {

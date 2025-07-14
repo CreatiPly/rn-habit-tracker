@@ -31,7 +31,7 @@ if (
 }
 
 // main client
-const myAppWriteClient = new Client()
+export const myAppWriteClient = new Client()
   .setEndpoint(appwriteEndpoint)
   .setProject(appwriteProjectId)
   .setPlatform(appwritePlatform);
@@ -43,3 +43,8 @@ export const myAuthClient = new Account(myAppWriteClient);
 export const myDatabaseClient = new Databases(myAppWriteClient);
 export const MYDATABASEID = appwriteDataBaseID;
 export const MYDBCOLLECTIONID = appwriteDBCollectionID;
+
+export interface RealtimeResponse {
+  events: string[];
+  payload: any;
+}
