@@ -71,6 +71,25 @@ export default function Index() {
     }
   };
 
+  const renderLeftActions = () => (
+    <View style={styles.swipeActionLeft}>
+      <MaterialCommunityIcons
+        name="trash-can-outline"
+        size={32}
+        color={"#fff"}
+      />
+    </View>
+  );
+  const renderRightActions = () => (
+    <View style={styles.swipeActionRight}>
+      <MaterialCommunityIcons
+        name="check-circle-outline"
+        size={32}
+        color={"#fff"}
+      />
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -93,11 +112,13 @@ export default function Index() {
           habits?.map((habit, key) => (
             <Swipeable
               key={key}
-              ref={() => {
+              ref={(ref) => {
                 swipeableRefs.current[habit.$id] = ref;
               }}
               overshootLeft={false}
               overshootRight={false}
+              renderLeftActions={renderLeftActions}
+              renderRightActions={renderRightActions}
             >
               <Surface style={styles.card}>
                 <View style={styles.cardContent}>
