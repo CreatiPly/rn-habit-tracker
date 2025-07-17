@@ -10,7 +10,10 @@ export default {
       appwriteProjectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
       appwritePlatform: process.env.EXPO_PUBLIC_APPWRITE_PLATFORM,
       appwriteDataBaseID: process.env.EXPO_PUBLIC_APPWRITE_DB_ID,
-      appwriteDBCollectionID: process.env.EXPO_PUBLIC_APPWRITE_DB_COLLECTION_ID,
+      appwriteDBHabitsCollectionID:
+        process.env.EXPO_PUBLIC_APPWRITE_DB_COLLECTION_ID,
+      appwriteDBHabitsCompletionCollectionID:
+        process.env.EXPO_PUBLIC_APPWRITE_DB_HABITS_COMPLETION_COLLECTION_ID,
     },
   },
 };

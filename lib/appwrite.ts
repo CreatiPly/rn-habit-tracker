@@ -15,7 +15,8 @@ const {
   appwriteProjectId,
   appwritePlatform,
   appwriteDataBaseID,
-  appwriteDBCollectionID,
+  appwriteDBHabitsCollectionID,
+  appwriteDBHabitsCompletionCollectionID,
 } = Constants.expoConfig?.extra || {};
 
 if (
@@ -23,7 +24,8 @@ if (
   !appwriteProjectId ||
   !appwritePlatform ||
   !appwriteDataBaseID ||
-  !appwriteDBCollectionID
+  !appwriteDBHabitsCollectionID ||
+  !appwriteDBHabitsCompletionCollectionID
 ) {
   throw new Error(
     "Appwrite configuration is missing in app.config.js or .env file"
@@ -42,7 +44,9 @@ export const myAuthClient = new Account(myAppWriteClient);
 // database client
 export const myDatabaseClient = new Databases(myAppWriteClient);
 export const MYDATABASEID = appwriteDataBaseID;
-export const MYDBCOLLECTIONID = appwriteDBCollectionID;
+export const MYDBCOLLECTIONID = appwriteDBHabitsCollectionID;
+export const MYHABITSCOMPLETIONCOLLECTIONID =
+  appwriteDBHabitsCompletionCollectionID;
 
 export interface RealtimeResponse {
   events: string[];
