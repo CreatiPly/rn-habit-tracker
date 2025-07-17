@@ -43,9 +43,9 @@ export const myAuthClient = new Account(myAppWriteClient);
 
 // database client
 export const myDatabaseClient = new Databases(myAppWriteClient);
-export const MYDATABASEID = appwriteDataBaseID;
-export const MYDBCOLLECTIONID = appwriteDBHabitsCollectionID;
-export const MYHABITSCOMPLETIONCOLLECTIONID =
+export const MY_DATABASE_ID = appwriteDataBaseID;
+export const MY_HABITS_COLLECTION_ID = appwriteDBHabitsCollectionID;
+export const MY_HABITS_COMPLETION_COLLECTION_ID =
   appwriteDBHabitsCompletionCollectionID;
 
 export interface RealtimeResponse {

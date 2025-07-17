@@ -1,8 +1,9 @@
 import {
+  MY_DATABASE_ID,
+  MY_HABITS_COLLECTION_ID,
+  MY_HABITS_COMPLETION_COLLECTION_ID,
   myAppWriteClient,
   myDatabaseClient,
-  MYDATABASEID,
-  MYDBCOLLECTIONID,
   RealtimeResponse,
 } from "@/lib/appwrite";
 import { useAuth } from "@/lib/authContext";
@@ -10,7 +11,7 @@ import { Habit } from "@/types/databse.type";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Query } from "react-native-appwrite";
+import { ID, Query } from "react-native-appwrite";
 import { Swipeable } from "react-native-gesture-handler";
 import { Button, Surface, Text } from "react-native-paper";
 
@@ -23,7 +24,7 @@ export default function Index() {
 
   useEffect(() => {
     if (user) {
-      const habitsChannel = `databases.${MYDATABASEID}.collections.${MYDBCOLLECTIONID}.documents`;
+      const habitsChannel = `databases.${MY_DATABASE_ID}.collections.${MY_HABITS_COLLECTION_ID}.documents`;
       const habitsSubscription = myAppWriteClient.subscribe(
         habitsChannel,
         (response: RealtimeResponse) => {
@@ -59,8 +60,8 @@ export default function Index() {
   const fetchHabitsByUserId = async () => {
     try {
       const fetchedHabits = await myDatabaseClient.listDocuments(
-        MYDATABASEID,
-        MYDBCOLLECTIONID,
+        MY_DATABASE_ID,
+        MY_HABITS_COLLECTION_ID,
         [Query.equal("user_id", user?.$id ?? "")]
       );
 
@@ -74,12 +75,44 @@ export default function Index() {
   const handleDeleteHabit = async (habitId: string) => {
     try {
       await myDatabaseClient.deleteDocument(
-        MYDATABASEID,
-        MYDBCOLLECTIONID,
+        MY_DATABASE_ID,
+        MY_HABITS_COLLECTION_ID,
         habitId
       );
     } catch (error) {
       console.error("Error deleting habit:", error);
+    }
+  };
+  const handleCompleteHabit = async (habitId: string) => {
+    if (!user) return;
+
+    const currentDate = new Date().toISOString();
+    try {
+      await myDatabaseClient.createDocument(
+        MY_DATABASE_ID,
+        MY_HABITS_COMPLETION_COLLECTION_ID,
+        ID.unique(),
+        {
+          habit_id: habitId,
+          user_id: user.$id,
+          completed_at: currentDate,
+        }
+      );
+
+      const habit = habits?.find((habit) => habit.$id === habitId);
+      if (!habit) return;
+
+      await myDatabaseClient.updateDocument(
+        MY_DATABASE_ID,
+        MY_HABITS_COLLECTION_ID,
+        habitId,
+        {
+          streak_count: habit.streak_count + 1,
+          last_completed: currentDate,
+        }
+      );
+    } catch (error) {
+      console.error("Error completing habit:", error);
     }
   };
 
@@ -134,6 +167,8 @@ export default function Index() {
               onSwipeableOpen={(swipeDirection) => {
                 if (swipeDirection === "left") {
                   handleDeleteHabit(habit.$id);
+                } else if (swipeDirection === "right") {
+                  handleCompleteHabit(habit.$id);
                 }
 
                 swipeableRefs.current[habit.$id]?.close();
