@@ -7,7 +7,7 @@ import {
   RealtimeResponse,
 } from "@/lib/appwrite";
 import { useAuth } from "@/lib/authContext";
-import { Habit } from "@/types/databse.type";
+import { Habit, HabitCompletions } from "@/types/databse.type";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -17,6 +17,7 @@ import { Button, Surface, Text } from "react-native-paper";
 
 export default function Index() {
   const [habits, setHabits] = useState<Habit[]>();
+  const [completedHabits, setCompletedHabits] = useState<string[]>();
 
   const { signOut, user } = useAuth();
 
@@ -49,6 +50,8 @@ export default function Index() {
           }
         }
       );
+
+      fetchTodayCompletions();
       fetchHabitsByUserId();
 
       return () => {
@@ -71,6 +74,26 @@ export default function Index() {
       console.error("Error fetching habits:", error);
     }
   };
+  const fetchTodayCompletions = async () => {
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const fetchedCompletions = await myDatabaseClient.listDocuments(
+        MY_DATABASE_ID,
+        MY_HABITS_COMPLETION_COLLECTION_ID,
+        [
+          Query.equal("user_id", user?.$id ?? ""),
+          Query.greaterThanEqual("completed_at", today.toISOString()),
+        ]
+      );
+
+      const completions = fetchedCompletions.documents as HabitCompletions[];
+      setCompletedHabits(completions.map((completion) => completion.habit_id));
+      // console.log("Fetched habits:", fetchedHabits.documents);
+    } catch (error) {
+      console.error("Error fetching habits:", error);
+    }
+  };
 
   const handleDeleteHabit = async (habitId: string) => {
     try {
@@ -84,7 +107,7 @@ export default function Index() {
     }
   };
   const handleCompleteHabit = async (habitId: string) => {
-    if (!user) return;
+    if (!user || completedHabits?.includes(habitId)) return;
 
     const currentDate = new Date().toISOString();
     try {
@@ -174,7 +197,7 @@ export default function Index() {
                 swipeableRefs.current[habit.$id]?.close();
               }}
             >
-              <Surface style={styles.card}>
+              <Surface style={styles.card} elevation={0}>
                 <View style={styles.cardContent}>
                   <Text style={styles.cardTitle}>{habit.title}</Text>
                   <Text style={styles.cardDescription}>
@@ -228,6 +251,8 @@ const styles = StyleSheet.create({
   card: {
     marginBottom: 18,
     borderRadius: 18,
+    borderWidth: 0.5,
+    borderColor: "#7c4dff",
     backgroundColor: "#f7f2fa",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -261,7 +286,6 @@ const styles = StyleSheet.create({
   streakBadge: {
     flexDirection: "row",
     alignItems: "center",
-    // justifyContent: "center",
     backgroundColor: "#fff3e0",
     borderRadius: 12,
     paddingHorizontal: 10,
