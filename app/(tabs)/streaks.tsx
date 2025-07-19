@@ -10,7 +10,9 @@ const Streaks = () => {
         alignItems: "center",
       }}
     >
-      <Text>this screen will be used to show streaks info</Text>
+      <Text>
+        this screen will be used to show streaks info. This is for the streak 😅
+      </Text>
     </View>
   );
 };
