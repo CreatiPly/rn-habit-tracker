@@ -166,13 +166,17 @@ export default function Index() {
       />
     </View>
   );
-  const renderRightActions = () => (
+  const renderRightActions = (habitId: string) => (
     <View style={styles.swipeActionRight}>
-      <MaterialCommunityIcons
-        name="check-circle-outline"
-        size={32}
-        color={"#fff"}
-      />
+      {isHabitCompleted(habitId) ? (
+        <Text style={{ color: "#fff" }}> Completed!</Text>
+      ) : (
+        <MaterialCommunityIcons
+          name="check-circle-outline"
+          size={32}
+          color={"#fff"}
+        />
+      )}
     </View>
   );
 
@@ -204,7 +208,7 @@ export default function Index() {
               overshootLeft={false}
               overshootRight={false}
               renderLeftActions={renderLeftActions}
-              renderRightActions={renderRightActions}
+              renderRightActions={() => renderRightActions(habit.$id)}
               onSwipeableOpen={(swipeDirection) => {
                 if (swipeDirection === "left") {
                   handleDeleteHabit(habit.$id);
