@@ -153,6 +153,10 @@ export default function Index() {
     }
   };
 
+  const isHabitCompleted = (habitId: string) => {
+    return completedHabits?.includes(habitId);
+  };
+
   const renderLeftActions = () => (
     <View style={styles.swipeActionLeft}>
       <MaterialCommunityIcons
@@ -211,7 +215,13 @@ export default function Index() {
                 swipeableRefs.current[habit.$id]?.close();
               }}
             >
-              <Surface style={styles.card} elevation={0}>
+              <Surface
+                style={[
+                  styles.card,
+                  isHabitCompleted(habit.$id) && styles.cardCompleted,
+                ]}
+                elevation={0}
+              >
                 <View style={styles.cardContent}>
                   <Text style={styles.cardTitle}>{habit.title}</Text>
                   <Text style={styles.cardDescription}>

@@ -1,7 +1,7 @@
 import {
+  MY_DATABASE_ID,
+  MY_HABITS_COLLECTION_ID,
   myDatabaseClient,
-  MYDATABASEID,
-  MYDBCOLLECTIONID,
 } from "@/lib/appwrite";
 import { useAuth } from "@/lib/authContext";
 import { useRouter } from "expo-router";
@@ -33,8 +33,8 @@ const CreateHabit = () => {
 
     try {
       await myDatabaseClient.createDocument(
-        MYDATABASEID,
-        MYDBCOLLECTIONID,
+        MY_DATABASE_ID,
+        MY_HABITS_COLLECTION_ID,
         ID.unique(),
         {
           user_id: user.$id,
