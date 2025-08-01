@@ -50,12 +50,26 @@ export default function Index() {
           }
         }
       );
+      const completionsChannel = `databases.${MY_DATABASE_ID}.collections.${MY_HABITS_COMPLETION_COLLECTION_ID}.documents`;
+      const completionsSubscription = myAppWriteClient.subscribe(
+        completionsChannel,
+        (response: RealtimeResponse) => {
+          if (
+            response.events.includes(
+              "databases.*.collections.*.documents.*.create"
+            )
+          ) {
+            fetchTodayCompletions();
+          }
+        }
+      );
 
       fetchTodayCompletions();
       fetchHabitsByUserId();
 
       return () => {
         habitsSubscription();
+        completionsSubscription();
       };
     }
   }, [user]);
