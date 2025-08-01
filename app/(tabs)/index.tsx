@@ -7,7 +7,7 @@ import {
   RealtimeResponse,
 } from "@/lib/appwrite";
 import { useAuth } from "@/lib/authContext";
-import { Habit, HabitCompletions } from "@/types/databse.type";
+import { Habit, HabitCompletion } from "@/types/databse.type";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -101,7 +101,7 @@ export default function Index() {
         ]
       );
 
-      const completions = fetchedCompletions.documents as HabitCompletions[];
+      const completions = fetchedCompletions.documents as HabitCompletion[];
       setCompletedHabits(completions.map((completion) => completion.habit_id));
       // console.log("Fetched habits:", fetchedHabits.documents);
     } catch (error) {
