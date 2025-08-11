@@ -4,6 +4,7 @@ export default {
   expo: {
     name: "TrackHab",
     slug: "rn_habit_tracker",
+    icon: "./assets/images/icon.png",
     version: "1.0.0",
     extra: {
       appwriteEndpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
